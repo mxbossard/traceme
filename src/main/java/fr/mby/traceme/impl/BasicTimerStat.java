@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import fr.mby.traceme.Key;
 import fr.mby.traceme.Stat;
+import fr.mby.traceme.View;
 import fr.mby.traceme.simple.Timer.EndEvent;
 import fr.mby.traceme.simple.Timer.StartEvent;
 import fr.mby.traceme.simple.Timer.TimerEvent;
@@ -29,12 +30,15 @@ public class BasicTimerStat implements Stat<TimerEvent> {
 		}
 	}
 	
+	@Override
+	public View draw() {
+		return new StringView(recordedDurations.toString());
+	}
 
 	@Override
 	public StringView flush() {
 		return new StringView(recordedDurations.toString());
 	}
-
 
 	@Override
 	public void reset() {
