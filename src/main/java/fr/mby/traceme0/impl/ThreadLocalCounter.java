@@ -1,14 +1,14 @@
-package fr.mby.traceme.impl;
+package fr.mby.traceme0.impl;
 
 import java.util.HashMap;
 
-import fr.mby.traceme.CounterStat;
-import fr.mby.traceme.StatKey;
-import fr.mby.traceme.ViewRenderer;
+import fr.mby.traceme.Key;
+import fr.mby.traceme0.CounterStat;
+import fr.mby.traceme0.ViewRenderer;
 
 public class ThreadLocalCounter implements CounterStat {
 
-	private final ThreadLocal<HashMap<StatKey, Long>> counter = new ThreadLocal<>();
+	private final ThreadLocal<HashMap<Key, Long>> counter = new ThreadLocal<>();
 	
 	@Override
 	public void reset() {
@@ -16,7 +16,7 @@ public class ThreadLocalCounter implements CounterStat {
 	}
 
 	@Override
-	public void increment(StatKey key) {
+	public void increment(Key key) {
 		counter.get().merge(key, 1L, (x, y) -> x + 1);
 	}
 

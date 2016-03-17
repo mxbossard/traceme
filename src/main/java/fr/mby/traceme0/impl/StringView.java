@@ -1,8 +1,8 @@
-package fr.mby.traceme.impl;
+package fr.mby.traceme0.impl;
 
-import fr.mby.traceme.View;
+import fr.mby.traceme0.StatView;
 
-public class StringView implements View {
+public class StringView implements StatView {
 
 	/** SVUID. */
 	private static final long serialVersionUID = -6673292862508602346L;

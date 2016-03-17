@@ -3,22 +3,28 @@ package fr.mby.traceme;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.time.Instant;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
-import fr.mby.traceme.impl.SimpleCounter;
-import fr.mby.traceme.impl.SimpleKey;
-import fr.mby.traceme.impl.SimpleTimer;
+import fr.mby.traceme.impl.BasicCounterStat;
+import fr.mby.traceme.impl.BasicTimerStat;
 import fr.mby.traceme.impl.StringView;
+import fr.mby.traceme.simple.Counter;
+import fr.mby.traceme.simple.SimpleKey;
+import fr.mby.traceme.simple.Timer;
+import fr.mby.traceme0.impl.SimpleTimer;
+import fr.mby.traceme0.impl.SimpleTimer.StringRenderer;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class TraceMeTests {
 
-	private static final StatKey KEY_FOO = new SimpleKey("Foo");
-	private static final StatKey KEY_BAR = new SimpleKey("Bar");
-	private static final StatKey KEY_BAZ = new SimpleKey("Baz");
+	private static final Key KEY_FOO = new SimpleKey("Foo");
+	private static final Key KEY_BAR = new SimpleKey("Bar");
+	private static final Key KEY_BAZ = new SimpleKey("Baz");
 
 	@Before
 	public void setUp() {
@@ -27,49 +33,57 @@ public class TraceMeTests {
 
 	@Test
 	public void testSimpleCounter() throws Exception {
-		SimpleCounter sc = new SimpleCounter();
-		sc.increment(KEY_FOO);
-		sc.increment(KEY_FOO);
-		sc.increment(KEY_FOO);
-		sc.increment(KEY_BAR);
-		sc.increment(KEY_FOO);
-		sc.increment(KEY_FOO);
-		sc.increment(KEY_BAR);
-		sc.increment(KEY_FOO);
+		Counter cm = new Counter();
+
+		BasicCounterStat stat = new BasicCounterStat();
+		cm.subscribe(stat);
 		
-		StringView view = sc.flush(sc.new StringRenderer());
+		cm.increment(KEY_FOO);
+		cm.increment(KEY_FOO);
+		cm.increment(KEY_FOO);
+		cm.increment(KEY_BAR);
+		cm.increment(KEY_FOO);
+		cm.increment(KEY_FOO);
+		cm.increment(KEY_BAR);
+		cm.increment(KEY_FOO);
+		
+		StringView view = stat.flush();
 		view.paint();
 		
-		assertEquals("SimpleCounter view should be exact", "{SimpleKey [key=Bar]=2, SimpleKey [key=Foo]=6}", view.getMessage());
+		assertEquals("BasicCounterStat view should be exact", "{SimpleKey [key=Bar]=2, SimpleKey [key=Foo]=6}", view.getMessage());
 	}
 
 	@Test
 	public void testSimpleTimer() throws Exception {
-		SimpleTimer st = new SimpleTimer();
-		st.start(KEY_FOO);
-		Thread.sleep(1);
-		st.start(KEY_BAR);
-		Thread.sleep(1);
-		st.end(KEY_BAR);
-		Thread.sleep(1);
-		st.start(KEY_BAR);
-		Thread.sleep(1);
-		st.start(KEY_BAR);
-		Thread.sleep(1);
-		st.end(KEY_BAZ);
-		Thread.sleep(1);
-		st.start(KEY_BAR);
-		Thread.sleep(1);
-		st.end(KEY_BAR);
-		Thread.sleep(1);
-		st.end(KEY_FOO);
-		Thread.sleep(1);
-		st.end(KEY_BAR);
+		Timer tm = new Timer();
 		
-		StringView view = st.flush(st.new StringRenderer());
+		BasicTimerStat stat = new BasicTimerStat();
+		tm.subscribe(stat);
+		
+		tm.start(KEY_FOO);
+		Thread.sleep(1);
+		tm.start(KEY_BAR);
+		Thread.sleep(1);
+		tm.end(KEY_BAR);
+		Thread.sleep(1);
+		tm.start(KEY_BAR);
+		Thread.sleep(1);
+		tm.start(KEY_BAR);
+		Thread.sleep(1);
+		tm.end(KEY_BAZ);
+		Thread.sleep(1);
+		tm.start(KEY_BAR);
+		Thread.sleep(1);
+		tm.end(KEY_BAR);
+		Thread.sleep(1);
+		tm.end(KEY_FOO);
+		Thread.sleep(1);
+		tm.end(KEY_BAR);
+		
+		StringView view = stat.flush();
 		view.paint();
 		
 		assertNotNull("SimpleTimer view should not be null", view.getMessage());
 	}
-
+	
 }

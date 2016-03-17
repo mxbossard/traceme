@@ -1,8 +1,8 @@
-package fr.mby.traceme.impl;
+package fr.mby.traceme0.impl;
 
-import fr.mby.traceme.StatKey;
+import fr.mby.traceme.Key;
 
-public class SimpleKey implements StatKey {
+public class SimpleKey implements Key {
 
 	/** SVUID. */
 	private static final long serialVersionUID = -6212304597317488036L;

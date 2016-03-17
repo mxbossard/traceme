@@ -1,4 +1,4 @@
-package fr.mby.traceme;
+package fr.mby.traceme0;
 
 public interface ViewRenderer<S extends Stat, T extends StatView> {
 

@@ -1,15 +1,15 @@
-package fr.mby.traceme.impl;
+package fr.mby.traceme0.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import fr.mby.traceme.CounterStat;
-import fr.mby.traceme.StatKey;
-import fr.mby.traceme.ViewRenderer;
+import fr.mby.traceme.Key;
+import fr.mby.traceme0.CounterStat;
+import fr.mby.traceme0.ViewRenderer;
 
 public class SimpleCounter implements CounterStat {
 
-	private final Map<StatKey, Long> counter = new HashMap<>();
+	private final Map<Key, Long> counter = new HashMap<>();
 	
 	@Override
 	public void reset() {
@@ -17,7 +17,7 @@ public class SimpleCounter implements CounterStat {
 	}
 
 	@Override
-	public void increment(StatKey key) {
+	public void increment(Key key) {
 		counter.merge(key, 1L, (x, y) -> x + 1);
 	}
 
