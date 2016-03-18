@@ -1,4 +1,4 @@
-package fr.mby.traceme.simple;
+package fr.mby.traceme.impl;
 
 import fr.mby.traceme.Key;
 

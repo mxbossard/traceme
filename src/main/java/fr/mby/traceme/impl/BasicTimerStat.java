@@ -11,9 +11,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import fr.mby.traceme.Key;
 import fr.mby.traceme.Stat;
 import fr.mby.traceme.View;
-import fr.mby.traceme.simple.Timer.EndEvent;
-import fr.mby.traceme.simple.Timer.StartEvent;
-import fr.mby.traceme.simple.Timer.TimerEvent;
+import fr.mby.traceme.events.TimerEvent;
+import fr.mby.traceme.events.StartEvent;
+import fr.mby.traceme.events.StopEvent;
 
 public class BasicTimerStat implements Stat<TimerEvent> {
 
@@ -23,10 +23,10 @@ public class BasicTimerStat implements Stat<TimerEvent> {
 	
 	@Override
 	public void store(TimerEvent event) {
-		if (StartEvent.class.isAssignableFrom(event.getClass())) {
+		if (event.ofType(StartEvent.class)) {
 			storeStart((StartEvent) event);
-		} else if (EndEvent.class.isAssignableFrom(event.getClass())) {
-			storeEnd((EndEvent) event);
+		} else if (event.ofType(StopEvent.class)) {
+			storeEnd((StopEvent) event);
 		}
 	}
 	
@@ -51,7 +51,7 @@ public class BasicTimerStat implements Stat<TimerEvent> {
 		inProgressTimers.get(event.getKey()).push(event.getMeasure());
 	}
 
-	private void storeEnd(EndEvent event) {
+	private void storeEnd(StopEvent event) {
 		inProgressTimers.computeIfPresent(event.getKey(), (k, stack) -> {
 			final Duration duration = Duration.between(stack.pop(), event.getMeasure());
 			recordedDurations.putIfAbsent(event.getKey(), new ArrayList<>());

@@ -1,9 +1,11 @@
 package fr.mby.traceme;
 
-public interface Event<M> {
+public interface Event<T> {
 
 	Key getKey();
 	
-	M getMeasure();
+	T getMeasure();
+	
+	<E extends Event<T>> boolean ofType(Class<E> type);
 	
 }

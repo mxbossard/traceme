@@ -9,15 +9,15 @@ import com.google.common.collect.ImmutableMap;
 import fr.mby.traceme.Key;
 import fr.mby.traceme.Stat;
 import fr.mby.traceme.View;
-import fr.mby.traceme.simple.Counter.CounterEvent;
+import fr.mby.traceme.events.IncrementEvent;
 
-public class BasicCounterStat implements Stat<CounterEvent> {
+public class BasicCounterStat implements Stat<IncrementEvent> {
 
 	private ConcurrentHashMap<Key, Long> store = new ConcurrentHashMap<>();
 	
 	@Override
-	public void store(CounterEvent event) {
-		store.merge(event.getKey(), 1L, (x, y) -> x + 1);
+	public void store(IncrementEvent event) {
+		store.merge(event.getKey(), event.getMeasure(), (x, y) -> x + event.getMeasure());
 	}
 	
 	@Override

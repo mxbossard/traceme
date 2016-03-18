@@ -3,8 +3,6 @@ package fr.mby.traceme;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.time.Instant;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,12 +10,10 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 
 import fr.mby.traceme.impl.BasicCounterStat;
 import fr.mby.traceme.impl.BasicTimerStat;
+import fr.mby.traceme.impl.SimpleKey;
 import fr.mby.traceme.impl.StringView;
-import fr.mby.traceme.simple.Counter;
-import fr.mby.traceme.simple.SimpleKey;
-import fr.mby.traceme.simple.Timer;
-import fr.mby.traceme0.impl.SimpleTimer;
-import fr.mby.traceme0.impl.SimpleTimer.StringRenderer;
+import fr.mby.traceme.metrics.Counter;
+import fr.mby.traceme.metrics.Timer;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class TraceMeTests {
@@ -64,21 +60,21 @@ public class TraceMeTests {
 		Thread.sleep(1);
 		tm.start(KEY_BAR);
 		Thread.sleep(1);
-		tm.end(KEY_BAR);
+		tm.stop(KEY_BAR);
 		Thread.sleep(1);
 		tm.start(KEY_BAR);
 		Thread.sleep(1);
 		tm.start(KEY_BAR);
 		Thread.sleep(1);
-		tm.end(KEY_BAZ);
+		tm.stop(KEY_BAZ);
 		Thread.sleep(1);
 		tm.start(KEY_BAR);
 		Thread.sleep(1);
-		tm.end(KEY_BAR);
+		tm.stop(KEY_BAR);
 		Thread.sleep(1);
-		tm.end(KEY_FOO);
+		tm.stop(KEY_FOO);
 		Thread.sleep(1);
-		tm.end(KEY_BAR);
+		tm.stop(KEY_BAR);
 		
 		StringView view = stat.flush();
 		view.paint();
